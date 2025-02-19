@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    namespace "com.yuyh.imgsel"
     compileSdkVersion 28
 
     defaultConfig {
@@ -19,8 +20,11 @@ android {
 }
 
 dependencies {
+    implementation project(':library')
     // compile project(':library')
     implementation 'com.github.smuyyh:ImageSelector:3.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.facebook.fresco:fresco:0.6.0'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.facebook.fresco:fresco:0.6.0'
 }
