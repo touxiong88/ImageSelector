@@ -3,6 +3,7 @@ package com.yuyh.library.imgsel.adapter;
 import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -52,12 +53,29 @@ public class PreviewAdapter extends PagerAdapter {
         final ImageView photoView = (ImageView) root.findViewById(R.id.ivImage);
 
 
-        photoView.setOnClickListener(new View.OnClickListener() {
+        photoView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onImageClick(position, images.get(position));
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // 手指按下
+                        Log.d("Touch", "ACTION_DOWN");
+                        // 在这里处理全屏显示逻辑，例如隐藏状态栏、导航栏等
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        // 手指移动
+                        Log.d("Touch", "ACTION_MOVE");
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        // 手指抬起
+                        Log.d("Touch", "ACTION_UP");
+                        // 在这里处理退出全屏的逻辑，例如恢复状态栏、导航栏等
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        Log.d("Touch", "ACTION_CANCEL");
+                        break;
                 }
+                return true; // 拦截触摸事件，阻止事件继续传递
             }
         });
 
@@ -85,7 +103,7 @@ public class PreviewAdapter extends PagerAdapter {
     }
 
     public void setListener(OnItemClickListener listener) {
-        this.listener = listener;
+        //this.listener = listener;
     }
 
     private void hideSystemUI() {

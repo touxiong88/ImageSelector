@@ -5,7 +5,8 @@
     <application>
         <activity
             android:name=".ui.ISListActivity"
-            android:theme="@style/SelTheme" />
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <meta-data
             android:name="APP_ID"
