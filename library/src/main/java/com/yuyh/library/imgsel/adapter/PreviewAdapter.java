@@ -2,6 +2,7 @@ package com.yuyh.library.imgsel.adapter;
 
 import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.yuyh.library.imgsel.R;
 import com.yuyh.library.imgsel.bean.Image;
 import com.yuyh.library.imgsel.common.Constant;
 import com.yuyh.library.imgsel.common.OnItemClickListener;
+import com.yuyh.library.imgsel.utils.LogUtils;
 
 import java.util.List;
 
@@ -30,13 +32,11 @@ public class PreviewAdapter extends PagerAdapter {
         this.activity = activity;
         this.images = images;
         this.config = config;
+        LogUtils.d("yuyh", "PreviewAdapter: " + images.size());
     }
 
     @Override
     public int getCount() {
-        if (config.needCamera)
-            return images.size() - 1;
-        else
             return images.size();
     }
 
@@ -49,7 +49,7 @@ public class PreviewAdapter extends PagerAdapter {
         if (config.multiSelect) {
 
             ivChecked.setVisibility(View.VISIBLE);
-            final Image image = images.get(config.needCamera ? position + 1 : position);
+            final Image image = images.get(position);
             if (Constant.imageList.contains(image.path)) {
                 ivChecked.setImageResource(R.drawable.ic_checked);
             } else {
@@ -87,7 +87,7 @@ public class PreviewAdapter extends PagerAdapter {
         container.addView(root, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
-        displayImage(photoView, images.get(config.needCamera ? position + 1 : position).path);
+        displayImage(photoView, images.get(position).path);
 
         return root;
     }

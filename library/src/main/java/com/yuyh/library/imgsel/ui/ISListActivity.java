@@ -178,20 +178,6 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
     public void onImageUnselected(String path) {
         btnConfirm.setText(String.format(getString(R.string.confirm_format), config.btnText, Constant.imageList.size(), config.maxNum));
     }
-
-    @Override
-    public void onCameraShot(File imageFile) {
-        if (imageFile != null) {
-            if (config.needCrop) {
-                crop(imageFile.getAbsolutePath());
-            } else {
-                Constant.imageList.add(imageFile.getAbsolutePath());
-                config.multiSelect = false; // 多选点击拍照，强制更改为单选
-                exit();
-            }
-        }
-    }
-
     @Override
     public void onPreviewChanged(int select, int sum, boolean visible) {
         if (visible) {

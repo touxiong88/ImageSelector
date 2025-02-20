@@ -7,10 +7,6 @@
             android:name=".ui.ISListActivity"
             android:theme="@style/SelTheme" />
 
-        <activity
-            android:name=".ui.ISCameraActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-
         <meta-data
             android:name="APP_ID"
             android:value="${applicationId}" />

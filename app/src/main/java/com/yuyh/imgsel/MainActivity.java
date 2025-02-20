@@ -14,7 +14,6 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.yuyh.library.imgsel.ISNav;
 import com.yuyh.library.imgsel.common.ImageLoader;
-import com.yuyh.library.imgsel.config.ISCameraConfig;
 import com.yuyh.library.imgsel.config.ISListConfig;
 import com.yuyh.library.imgsel.utils.StatusBarCompat;
 
@@ -29,7 +28,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_LIST_CODE = 0;
-    private static final int REQUEST_CAMERA_CODE = 1;
 
     private TextView tvResult;
     private SimpleDraweeView draweeView;
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
             for (String path : pathList) {
                 tvResult.append(path + "\n");
             }
-        } else if (requestCode == REQUEST_CAMERA_CODE && resultCode == RESULT_OK && data != null) {
+        } else if (resultCode == RESULT_OK && data != null) {
             String path = data.getStringExtra("result");
             tvResult.append(path + "\n");
         }

@@ -7,9 +7,7 @@ import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
 import com.yuyh.library.imgsel.common.ImageLoader;
-import com.yuyh.library.imgsel.config.ISCameraConfig;
 import com.yuyh.library.imgsel.config.ISListConfig;
-import com.yuyh.library.imgsel.ui.ISCameraActivity;
 import com.yuyh.library.imgsel.ui.ISListActivity;
 
 /**
@@ -56,16 +54,6 @@ public class ISNav {
             ISListActivity.startForResult((Fragment) source, config, reqCode);
         } else if (source instanceof android.app.Fragment) {
             ISListActivity.startForResult((android.app.Fragment) source, config, reqCode);
-        }
-    }
-
-    public void toCameraActivity(Object source, ISCameraConfig config, int reqCode) {
-        if (source instanceof Activity) {
-            ISCameraActivity.startForResult((Activity) source, config, reqCode);
-        } else if (source instanceof Fragment) {
-            ISCameraActivity.startForResult((Fragment) source, config, reqCode);
-        } else if (source instanceof android.app.Fragment) {
-            ISCameraActivity.startForResult((android.app.Fragment) source, config, reqCode);
         }
     }
 

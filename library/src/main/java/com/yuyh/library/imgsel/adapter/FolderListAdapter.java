@@ -1,6 +1,7 @@
 package com.yuyh.library.imgsel.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -11,6 +12,7 @@ import com.yuyh.library.imgsel.config.ISListConfig;
 import com.yuyh.library.imgsel.R;
 import com.yuyh.library.imgsel.bean.Folder;
 import com.yuyh.library.imgsel.common.OnFolderChangeListener;
+import com.yuyh.library.imgsel.utils.LogUtils;
 
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class FolderListAdapter extends EasyLVAdapter<Folder> {
         this.context = context;
         this.folderList = folderList;
         this.config = config;
+        LogUtils.d("yuyh", "FolderListAdapter: " + folderList.size());
     }
 
     @Override

@@ -84,9 +84,6 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
 
     private static final int LOADER_ALL = 0;
     private static final int LOADER_CATEGORY = 1;
-    private static final int REQUEST_CAMERA = 5;
-
-    private static final int CAMERA_REQUEST_CODE = 1;
 
     private File tempFile;
 
@@ -136,11 +133,9 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
                 outRect.bottom = halfSpacing;
             }
         });
-        if (config.needCamera)
-            imageList.add(new Image());
+
 
         imageListAdapter = new ImageListAdapter(getActivity(), imageList, config);
-        imageListAdapter.setShowCamera(config.needCamera);
         imageListAdapter.setMutiSelect(config.multiSelect);
         rvImageList.setAdapter(imageListAdapter);
         imageListAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -151,11 +146,10 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
 
             @Override
             public void onImageClick(int position, Image image) {
-                if (config.needCamera && position == 0) {
-                    showCameraAction();
-                } else {
                     if (config.multiSelect) {
-                        TransitionManager.go(new Scene(viewPager), new Fade().setDuration(200));
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                            TransitionManager.go(new Scene(viewPager), new Fade().setDuration(200));
+                        }
                         viewPager.setAdapter((previewAdapter = new PreviewAdapter(getActivity(), imageList, config)));
                         previewAdapter.setListener(new OnItemClickListener() {
                             @Override
@@ -168,19 +162,15 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
                                 hidePreview();
                             }
                         });
-                        if (config.needCamera) {
-                            callback.onPreviewChanged(position, imageList.size() - 1, true);
-                        } else {
-                            callback.onPreviewChanged(position + 1, imageList.size(), true);
-                        }
-                        viewPager.setCurrentItem(config.needCamera ? position - 1 : position);
+                        callback.onPreviewChanged(position + 1, imageList.size(), true);
+                        viewPager.setCurrentItem(position);
                         viewPager.setVisibility(View.VISIBLE);
                     } else {
                         if (callback != null) {
                             callback.onSingleImageSelected(image.path);
                         }
                     }
-                }
+
             }
         });
 
@@ -276,8 +266,6 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
                     } while (data.moveToNext());
 
                     imageList.clear();
-                    if (config.needCamera)
-                        imageList.add(new Image());
                     imageList.addAll(tempImageList);
 
                     imageListAdapter.notifyDataSetChanged();
@@ -313,8 +301,6 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
                     btnAlbumSelected.setText(config.allImagesText);
                 } else {
                     imageList.clear();
-                    if (config.needCamera)
-                        imageList.add(new Image());
                     imageList.addAll(folder.images);
                     imageListAdapter.notifyDataSetChanged();
 
@@ -376,76 +362,16 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
         }
     }
 
-    private void showCameraAction() {
 
-        if (config.maxNum <= Constant.imageList.size()) {
-            Toast.makeText(getActivity(), String.format(getString(R.string.maxnum), config.maxNum), Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
-            return;
-        }
-
-        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if (cameraIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            tempFile = new File(FileUtils.createRootPath(getActivity()) + "/" + System.currentTimeMillis() + ".jpg");
-            LogUtils.e(tempFile.getAbsolutePath());
-            FileUtils.createFile(tempFile);
-
-            Uri uri = FileProvider.getUriForFile(getActivity(),
-                    FileUtils.getApplicationId(getActivity()) + ".image_provider", tempFile);
-
-            List<ResolveInfo> resInfoList = getActivity().getPackageManager()
-                    .queryIntentActivities(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY);
-            for (ResolveInfo resolveInfo : resInfoList) {
-                String packageName = resolveInfo.activityInfo.packageName;
-                getActivity().grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                        | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri); //Uri.fromFile(tempFile)
-            startActivityForResult(cameraIntent, REQUEST_CAMERA);
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.open_camera_failure), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CAMERA) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (tempFile != null) {
-                    if (callback != null) {
-                        callback.onCameraShot(tempFile);
-                    }
-                }
-            } else {
-                if (tempFile != null && tempFile.exists()) {
-                    tempFile.delete();
-                }
-            }
-        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case CAMERA_REQUEST_CODE:
-                if (grantResults.length >= 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    showCameraAction();
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.permission_camera_denied), Toast.LENGTH_SHORT).show();
-                }
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
@@ -455,11 +381,8 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
 
     @Override
     public void onPageSelected(int position) {
-        if (config.needCamera) {
-            callback.onPreviewChanged(position + 1, imageList.size() - 1, true);
-        } else {
-            callback.onPreviewChanged(position + 1, imageList.size(), true);
-        }
+        callback.onPreviewChanged(position + 1, imageList.size(), true);
+
     }
 
     @Override
@@ -469,7 +392,9 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
 
     public boolean hidePreview() {
         if (viewPager.getVisibility() == View.VISIBLE) {
-            TransitionManager.go(new Scene(viewPager), new Fade().setDuration(200));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                TransitionManager.go(new Scene(viewPager), new Fade().setDuration(200));
+            }
             viewPager.setVisibility(View.GONE);
             callback.onPreviewChanged(0, 0, false);
             imageListAdapter.notifyDataSetChanged();
