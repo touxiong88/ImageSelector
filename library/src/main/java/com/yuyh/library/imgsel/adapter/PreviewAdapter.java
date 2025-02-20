@@ -44,34 +44,9 @@ public class PreviewAdapter extends PagerAdapter {
     public View instantiateItem(ViewGroup container, final int position) {
         View root = View.inflate(activity, R.layout.item_pager_img_sel, null);
         final ImageView photoView = (ImageView) root.findViewById(R.id.ivImage);
-        final ImageView ivChecked = (ImageView) root.findViewById(R.id.ivPhotoCheaked);
 
         if (config.multiSelect) {
-
-            ivChecked.setVisibility(View.VISIBLE);
             final Image image = images.get(position);
-            if (Constant.imageList.contains(image.path)) {
-                ivChecked.setImageResource(R.drawable.ic_checked);
-            } else {
-                ivChecked.setImageResource(R.drawable.ic_uncheck);
-            }
-
-            ivChecked.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        int ret = listener.onCheckedClick(position, image);
-                        if (ret == 1) { // 局部刷新
-                            if (Constant.imageList.contains(image.path)) {
-                                ivChecked.setImageResource(R.drawable.ic_checked);
-                            } else {
-                                ivChecked.setImageResource(R.drawable.ic_uncheck);
-                            }
-                        }
-                    }
-                }
-            });
-
             photoView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,8 +55,6 @@ public class PreviewAdapter extends PagerAdapter {
                     }
                 }
             });
-        } else {
-            ivChecked.setVisibility(View.GONE);
         }
 
         container.addView(root, ViewGroup.LayoutParams.MATCH_PARENT,

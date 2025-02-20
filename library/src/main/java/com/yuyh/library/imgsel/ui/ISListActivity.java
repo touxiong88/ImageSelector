@@ -52,8 +52,6 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
     private ISListConfig config;
 
     private RelativeLayout rlTitleBar;
-    private TextView tvTitle;
-    private Button btnConfirm;
     private ImageView ivBack;
     private String cropImagePath;
 
@@ -106,10 +104,6 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
 
     private void initView() {
         rlTitleBar = findViewById(R.id.rlTitleBar);
-        tvTitle = findViewById(R.id.tvTitle);
-
-        btnConfirm = findViewById(R.id.btnConfirm);
-        btnConfirm.setOnClickListener(this);
 
         ivBack = findViewById(R.id.ivBack);
         ivBack.setOnClickListener(this);
@@ -128,35 +122,21 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
             rlTitleBar.setBackgroundColor(config.titleBgColor);
-            tvTitle.setTextColor(config.titleColor);
-            tvTitle.setText(config.title);
-            btnConfirm.setBackgroundColor(config.btnBgColor);
-            btnConfirm.setTextColor(config.btnTextColor);
+
 
             if (config.multiSelect) {
                 if (!config.rememberSelected) {
                     Constant.imageList.clear();
                 }
-                btnConfirm.setText(String.format(getString(R.string.confirm_format), config.btnText, Constant.imageList.size(), config.maxNum));
             } else {
                 Constant.imageList.clear();
-                btnConfirm.setVisibility(View.GONE);
             }
         }
     }
 
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.btnConfirm) {
-            if (Constant.imageList != null && !Constant.imageList.isEmpty()) {
-                exit();
-            } else {
-                Toast.makeText(this, getString(R.string.minnum), Toast.LENGTH_SHORT).show();
-            }
-        } else if (id == R.id.ivBack) {
-            onBackPressed();
-        }
+
     }
 
     @Override
@@ -171,20 +151,15 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onImageSelected(String path) {
-        btnConfirm.setText(String.format(getString(R.string.confirm_format), config.btnText, Constant.imageList.size(), config.maxNum));
+
     }
 
     @Override
     public void onImageUnselected(String path) {
-        btnConfirm.setText(String.format(getString(R.string.confirm_format), config.btnText, Constant.imageList.size(), config.maxNum));
+
     }
     @Override
     public void onPreviewChanged(int select, int sum, boolean visible) {
-        if (visible) {
-            tvTitle.setText(select + "/" + sum);
-        } else {
-            tvTitle.setText(config.title);
-        }
     }
 
     private void crop(String imagePath) {

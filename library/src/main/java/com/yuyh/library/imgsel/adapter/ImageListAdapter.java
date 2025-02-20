@@ -39,24 +39,6 @@ public class ImageListAdapter extends EasyRVAdapter<Image> {
     @Override
     protected void onBindData(final EasyRVHolder viewHolder, final int position, final Image item) {
 
-        if (mutiSelect) {
-            viewHolder.getView(R.id.ivPhotoCheaked).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        int ret = listener.onCheckedClick(position, item);
-                        if (ret == 1) { // 局部刷新
-                            if (Constant.imageList.contains(item.path)) {
-                                viewHolder.setImageResource(R.id.ivPhotoCheaked, R.drawable.ic_checked);
-                            } else {
-                                viewHolder.setImageResource(R.id.ivPhotoCheaked, R.drawable.ic_uncheck);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
         viewHolder.setOnItemViewClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,17 +49,6 @@ public class ImageListAdapter extends EasyRVAdapter<Image> {
 
         final ImageView iv = viewHolder.getView(R.id.ivImage);
         ISNav.getInstance().displayImage(context, item.path, iv);
-
-        if (mutiSelect) {
-            viewHolder.setVisible(R.id.ivPhotoCheaked, true);
-            if (Constant.imageList.contains(item.path)) {
-                viewHolder.setImageResource(R.id.ivPhotoCheaked, R.drawable.ic_checked);
-            } else {
-                viewHolder.setImageResource(R.id.ivPhotoCheaked, R.drawable.ic_uncheck);
-            }
-        } else {
-            viewHolder.setVisible(R.id.ivPhotoCheaked, false);
-        }
     }
 
     public void setMutiSelect(boolean mutiSelect) {
