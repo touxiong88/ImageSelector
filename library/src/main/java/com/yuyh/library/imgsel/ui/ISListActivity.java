@@ -50,9 +50,6 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
     private static final int STORAGE_REQUEST_CODE = 1;
 
     private ISListConfig config;
-
-    private RelativeLayout rlTitleBar;
-    private ImageView ivBack;
     private String cropImagePath;
 
     private ImgSelFragment fragment;
@@ -103,15 +100,9 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void initView() {
-        rlTitleBar = findViewById(R.id.rlTitleBar);
 
-        ivBack = findViewById(R.id.ivBack);
-        ivBack.setOnClickListener(this);
 
         if (config != null) {
-            if (config.backResId != -1) {
-                ivBack.setImageResource(config.backResId);
-            }
 
             if (config.statusBarColor != -1) {
                 StatusBarCompat.compat(this, config.statusBarColor, config.isDark);
@@ -121,7 +112,6 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
                     //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
                 }
             }
-            rlTitleBar.setBackgroundColor(config.titleBgColor);
 
 
             if (config.multiSelect) {

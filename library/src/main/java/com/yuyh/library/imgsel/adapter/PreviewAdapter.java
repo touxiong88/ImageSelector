@@ -5,6 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.yuyh.library.imgsel.ISNav;
@@ -42,20 +43,24 @@ public class PreviewAdapter extends PagerAdapter {
 
     @Override
     public View instantiateItem(ViewGroup container, final int position) {
+
+        this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // 设置全屏沉浸式模式
+        hideSystemUI();
         View root = View.inflate(activity, R.layout.item_pager_img_sel, null);
         final ImageView photoView = (ImageView) root.findViewById(R.id.ivImage);
 
-        if (config.multiSelect) {
-            final Image image = images.get(position);
-            photoView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onImageClick(position, images.get(position));
-                    }
+
+        photoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onImageClick(position, images.get(position));
                 }
-            });
-        }
+            }
+        });
+
 
         container.addView(root, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
@@ -81,5 +86,24 @@ public class PreviewAdapter extends PagerAdapter {
 
     public void setListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    private void hideSystemUI() {
+        // Hide status bar and navigation bar
+        this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        View decorView = this.activity.getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY; // 使用 IMMERSIVE_STICKY
+        decorView.setSystemUiVisibility(uiOptions);
+        this.activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+    }
+
+    private void showSystemUI() {
+        this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        View decorView = this.activity.getWindow().getDecorView();
+        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
     }
 }

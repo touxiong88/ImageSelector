@@ -1,28 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
-
-    <RelativeLayout
-        android:id="@+id/rlTitleBar"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:background="@color/mcolorPrimary">
-
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:padding="5dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_back" />
-
-
-    </RelativeLayout>
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/fmImageList"
@@ -30,4 +9,4 @@
         android:layout_height="match_parent"
         android:background="@android:color/white" />
 
-</LinearLayout>
+</FrameLayout>
