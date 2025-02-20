@@ -50,9 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 Glide.with(context).load(path).into(imageView);
             }
         });
-    }
 
-    public void Multiselect(View view) {
         tvResult.setText("");
         ISListConfig config = new ISListConfig.Builder()
                 .multiSelect(true)
@@ -65,46 +63,6 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         ISNav.getInstance().toListActivity(this, config, REQUEST_LIST_CODE);
-    }
-
-    public void Single(View view) {
-        tvResult.setText("");
-        ISListConfig config = new ISListConfig.Builder()
-                // 是否多选
-                .multiSelect(false)
-                .btnText("Confirm")
-                // 确定按钮背景色
-                //.btnBgColor(Color.parseColor(""))
-                // 确定按钮文字颜色
-                .btnTextColor(Color.WHITE)
-                // 使用沉浸式状态栏
-                .statusBarColor(Color.parseColor("#3F51B5"))
-                // 设置状态栏字体风格黑色
-                .isDarkStatusStyle(true)
-                // 返回图标ResId
-                .backResId(R.mipmap.back)
-                .title("Images")
-                .titleColor(Color.WHITE)
-                .titleBgColor(Color.parseColor("#3F51B5"))
-                .allImagesText("All Images")
-                .needCrop(true)
-                .cropSize(1, 1, 200, 200)
-                // 第一个是否显示相机
-                .needCamera(true)
-                // 最大选择图片数量
-                .maxNum(9)
-                .build();
-
-        ISNav.getInstance().toListActivity(this, config, REQUEST_LIST_CODE);
-    }
-
-    public void Camera(View view) {
-        ISCameraConfig config = new ISCameraConfig.Builder()
-                .needCrop(true)
-                .cropSize(1, 1, 200, 200)
-                .build();
-
-        ISNav.getInstance().toCameraActivity(this, config, REQUEST_CAMERA_CODE);
     }
 
     @Override
