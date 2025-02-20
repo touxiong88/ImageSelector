@@ -23,13 +23,7 @@ public class StatusBarCompat {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static View compat(Activity activity, int statusColor, boolean isDarkStyle) {
-        int color = ContextCompat.getColor(activity, R.color.colorPrimary);
-        if (color == statusColor) {
-            compatTransStatusBar(activity, Color.TRANSPARENT, isDarkStyle);
-        } else {
-            compatTransStatusBar(activity, statusColor, isDarkStyle);
-        }
-
+        compatTransStatusBar(activity, statusColor, isDarkStyle);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             ViewGroup contentView = activity.findViewById(android.R.id.content);
 
@@ -41,7 +35,7 @@ public class StatusBarCompat {
             statusBarView = new View(activity);
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     getStatusBarHeight(activity));
-            statusBarView.setBackgroundColor(color);
+            statusBarView.setBackgroundColor(statusColor);
             contentView.addView(statusBarView, lp);
 
             //activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

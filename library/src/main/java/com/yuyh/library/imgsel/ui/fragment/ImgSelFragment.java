@@ -350,7 +350,7 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
             } else {
                 folderPopupWindow.show();
                 if (folderPopupWindow.getListView() != null) {
-                    folderPopupWindow.getListView().setDivider(new ColorDrawable(ContextCompat.getColor(getActivity(), R.color.bottom_bg)));
+                    folderPopupWindow.getListView().setDivider(new ColorDrawable(ContextCompat.getColor(getActivity(), R.color.mbottom_bg)));
                 }
                 int index = folderListAdapter.getSelectIndex();
                 index = index == 0 ? index : index - 1;
