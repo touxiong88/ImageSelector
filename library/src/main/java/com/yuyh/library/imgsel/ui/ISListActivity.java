@@ -79,10 +79,9 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+/*        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        requestWindowFeature(Window.FEATURE_ACTION_BAR);
-        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);*/
 //        getWindow().addFlags(
 //                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         // 设置全屏沉浸式模式
@@ -114,17 +113,6 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
 
 
         if (config != null) {
-
-            if (config.statusBarColor != -1) {
-                StatusBarCompat.compat(this, config.statusBarColor, config.isDark);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                        && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                    //getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-                }
-            }
-
-
             if (config.multiSelect) {
                 if (!config.rememberSelected) {
                     Constant.imageList.clear();
@@ -286,10 +274,16 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         View decorView = this.getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
+        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY; // 使用 IMMERSIVE_STICKY
         decorView.setSystemUiVisibility(uiOptions);
         this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            this.getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        }
     }
 }
