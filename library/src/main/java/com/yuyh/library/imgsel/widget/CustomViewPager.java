@@ -5,6 +5,8 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
+import com.yuyh.library.imgsel.utils.LogUtils;
+
 public class CustomViewPager extends ViewPager {
 
     private boolean isLocked;
@@ -12,6 +14,7 @@ public class CustomViewPager extends ViewPager {
     public CustomViewPager(Context context) {
         super(context);
         isLocked = false;
+        LogUtils.d("yuyh", "CustomViewPager: ");
     }
 
     public CustomViewPager(Context context, AttributeSet attrs) {

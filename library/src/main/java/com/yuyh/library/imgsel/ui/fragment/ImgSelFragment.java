@@ -91,6 +91,7 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
         ImgSelFragment fragment = new ImgSelFragment();
         Bundle bundle = new Bundle();
         fragment.setArguments(bundle);
+        LogUtils.d("yuyh", "ImgSelFragment: ");
         return fragment;
     }
 
@@ -151,6 +152,7 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
                             TransitionManager.go(new Scene(viewPager), new Fade().setDuration(200));
                         }
                         viewPager.setAdapter((previewAdapter = new PreviewAdapter(getActivity(), imageList, config)));
+                        viewPager.setLocked(true);
                         previewAdapter.setListener(new OnItemClickListener() {
                             @Override
                             public int onCheckedClick(int position, Image image) {

@@ -1,5 +1,6 @@
 package com.yuyh.library.imgsel.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
@@ -50,46 +51,45 @@ public class PreviewAdapter extends PagerAdapter {
         // 设置全屏沉浸式模式
         hideSystemUI();
         View root = View.inflate(activity, R.layout.item_pager_img_sel, null);
-        final ImageView photoView = (ImageView) root.findViewById(R.id.ivImage);
-
-
-        photoView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // 手指按下
-                        Log.d("Touch", "ACTION_DOWN");
-                        // 在这里处理全屏显示逻辑，例如隐藏状态栏、导航栏等
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        // 手指移动
-                        Log.d("Touch", "ACTION_MOVE");
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        // 手指抬起
-                        Log.d("Touch", "ACTION_UP");
-                        // 在这里处理退出全屏的逻辑，例如恢复状态栏、导航栏等
-                        break;
-                    case MotionEvent.ACTION_CANCEL:
-                        Log.d("Touch", "ACTION_CANCEL");
-                        break;
-                }
-                return true; // 拦截触摸事件，阻止事件继续传递
-            }
-        });
-
-
         container.addView(root, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
+        final ImageView photoView = (ImageView) root.findViewById(R.id.ivImage);
 
         displayImage(photoView, images.get(position).path);
 
         return root;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void displayImage(ImageView photoView, String path) {
-        ISNav.getInstance().displayImage(activity, path, photoView);
+        ISNav.getInstance().displayImage(activity, path, photoView, true);
+
+            // 设置 OnTouchListener
+            photoView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            // 手指按下
+                            Log.d("Touch", "ACTION_DOWN");
+                            // 处理你的逻辑
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            // 手指移动
+                            Log.d("Touch", "ACTION_MOVE");
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            // 手指抬起
+                            Log.d("Touch", "ACTION_UP");
+                            break;
+                        case MotionEvent.ACTION_CANCEL:
+                            Log.d("Touch", "ACTION_CANCEL");
+                            break;
+                    }
+                    return true; // 拦截触摸事件
+                }
+            });
+
     }
 
     @Override
@@ -103,7 +103,7 @@ public class PreviewAdapter extends PagerAdapter {
     }
 
     public void setListener(OnItemClickListener listener) {
-        //this.listener = listener;
+        this.listener = listener;
     }
 
     private void hideSystemUI() {

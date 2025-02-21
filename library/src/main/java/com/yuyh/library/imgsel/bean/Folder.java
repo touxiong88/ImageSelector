@@ -1,5 +1,7 @@
 package com.yuyh.library.imgsel.bean;
 
+import com.yuyh.library.imgsel.utils.LogUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class Folder implements Serializable {
     public List<Image> images;
 
     public Folder() {
+        LogUtils.d("yuyh", "Folder: ");
 
     }
     @Override

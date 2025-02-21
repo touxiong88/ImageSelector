@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView.State;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
+import com.yuyh.library.imgsel.utils.LogUtils;
+
 public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
@@ -21,6 +23,7 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
         a.recycle();
+        LogUtils.d("yuyh", "DividerGridItemDecoration: ");
     }
 
     @Override

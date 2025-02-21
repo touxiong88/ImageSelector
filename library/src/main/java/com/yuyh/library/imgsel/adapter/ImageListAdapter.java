@@ -48,7 +48,7 @@ public class ImageListAdapter extends EasyRVAdapter<Image> {
         });
 
         final ImageView iv = viewHolder.getView(R.id.ivImage);
-        ISNav.getInstance().displayImage(context, item.path, iv);
+        ISNav.getInstance().displayImage(context, item.path, iv, false);// Hogan toDo
     }
 
     public void setMutiSelect(boolean mutiSelect) {

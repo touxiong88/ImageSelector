@@ -4,11 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
+import com.yuyh.library.imgsel.utils.LogUtils;
+
 public class SquareRelativeLayout extends RelativeLayout {
   
     public SquareRelativeLayout(Context context, AttributeSet attrs,
                                 int defStyle) {
-        super(context, attrs, defStyle);  
+        super(context, attrs, defStyle);
+        LogUtils.d("yuyh", "SquareRelativeLayout: ");
     }  
   
     public SquareRelativeLayout(Context context, AttributeSet attrs) {  

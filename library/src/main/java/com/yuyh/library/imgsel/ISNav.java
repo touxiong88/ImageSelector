@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.yuyh.library.imgsel.common.ImageLoader;
 import com.yuyh.library.imgsel.config.ISListConfig;
 import com.yuyh.library.imgsel.ui.ISListActivity;
+import com.yuyh.library.imgsel.utils.LogUtils;
 
 /**
  * 总线
@@ -29,6 +30,7 @@ public class ISNav {
                 }
             }
         }
+        LogUtils.d("yuyh", "ISNav: ");
         return instance;
     }
 
@@ -41,9 +43,9 @@ public class ISNav {
         this.loader = loader;
     }
 
-    public void displayImage(Context context, String path, ImageView imageView) {
+    public void displayImage(Context context, String path, ImageView imageView, boolean TouchIntercept) {
         if (loader != null) {
-            loader.displayImage(context, path, imageView);
+            loader.displayImage(context, path, imageView, TouchIntercept);
         }
     }
 

@@ -44,14 +44,14 @@ public class FolderListAdapter extends EasyLVAdapter<Folder> {
                     .setText(R.id.tvImageNum, "共" + getTotalImageSize() + "张");
             ImageView ivFolder = holder.getView(R.id.ivFolder);
             if (folderList.size() > 0) {
-                ISNav.getInstance().displayImage(context, folder.cover.path, ivFolder);
+                ISNav.getInstance().displayImage(context, folder.cover.path, ivFolder, false);
             }
         } else {
             holder.setText(R.id.tvFolderName, folder.name)
                     .setText(R.id.tvImageNum, "共" + folder.images.size() + "张");
             ImageView ivFolder = holder.getView(R.id.ivFolder);
             if (folderList.size() > 0) {
-                ISNav.getInstance().displayImage(context, folder.cover.path, ivFolder);
+                ISNav.getInstance().displayImage(context, folder.cover.path, ivFolder, false);
             }
         }
 

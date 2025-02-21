@@ -33,6 +33,7 @@ import com.yuyh.library.imgsel.common.Constant;
 import com.yuyh.library.imgsel.config.ISListConfig;
 import com.yuyh.library.imgsel.ui.fragment.ImgSelFragment;
 import com.yuyh.library.imgsel.utils.FileUtils;
+import com.yuyh.library.imgsel.utils.LogUtils;
 import com.yuyh.library.imgsel.utils.StatusBarCompat;
 
 import java.io.File;
@@ -106,6 +107,7 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
         if (!FileUtils.isSdCardAvailable()) {
             Toast.makeText(this, getString(R.string.sd_disable), Toast.LENGTH_SHORT).show();
         }
+        LogUtils.d("yuyh", "ISListActivity: ");
     }
 
     private void initView() {

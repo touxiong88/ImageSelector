@@ -10,5 +10,5 @@ import java.io.Serializable;
  * @date 2016/8/5.
  */
 public interface ImageLoader extends Serializable {
-    void displayImage(Context context, String path, ImageView imageView);
+    void displayImage(Context context, String path, ImageView imageView, boolean TouchIntercept);
 }

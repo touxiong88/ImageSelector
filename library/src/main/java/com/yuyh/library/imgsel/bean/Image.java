@@ -1,5 +1,7 @@
 package com.yuyh.library.imgsel.bean;
 
+import com.yuyh.library.imgsel.utils.LogUtils;
+
 import java.io.Serializable;
 
 /**
@@ -14,6 +16,7 @@ public class Image implements Serializable {
     public Image(String path, String name) {
         this.path = path;
         this.name = name;
+        LogUtils.d("yuyh", "Image: ");
     }
 
     public Image() {

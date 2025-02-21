@@ -1,10 +1,13 @@
 package com.yuyh.imgsel;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +18,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.yuyh.library.imgsel.ISNav;
 import com.yuyh.library.imgsel.common.ImageLoader;
 import com.yuyh.library.imgsel.config.ISListConfig;
+import com.yuyh.library.imgsel.utils.LogUtils;
 import com.yuyh.library.imgsel.utils.StatusBarCompat;
 
 import java.util.List;
@@ -43,9 +47,39 @@ public class MainActivity extends AppCompatActivity {
         draweeView = (SimpleDraweeView) findViewById(R.id.my_image_view);
 
         ISNav.getInstance().init(new ImageLoader() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
-            public void displayImage(Context context, String path, ImageView imageView) {
+            public void displayImage(Context context, String path, ImageView imageView, boolean TouchIntercept) {
                 Glide.with(context).load(path).into(imageView);
+                LogUtils.d("yuyh", "displayImage: " + TouchIntercept);
+                if(TouchIntercept) {
+                    // 设置 OnTouchListener
+                    imageView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            switch (event.getAction()) {
+                                case MotionEvent.ACTION_DOWN:
+                                    // 手指按下
+                                    Log.d("Touch", "ACTION_DOWN");
+                                    // 处理你的逻辑
+                                    break;
+                                case MotionEvent.ACTION_MOVE:
+                                    // 手指移动
+                                    Log.d("Touch", "ACTION_MOVE");
+                                    break;
+                                case MotionEvent.ACTION_UP:
+                                    // 手指抬起
+                                    Log.d("Touch", "ACTION_UP");
+                                    break;
+                                case MotionEvent.ACTION_CANCEL:
+                                    Log.d("Touch", "ACTION_CANCEL");
+                                    break;
+                            }
+                            return true; // 拦截触摸事件
+                        }
+                    });
+                }
+
             }
         });
 
