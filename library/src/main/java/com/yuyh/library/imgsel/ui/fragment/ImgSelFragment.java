@@ -13,6 +13,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -84,7 +86,9 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
 
     private static final int LOADER_ALL = 0;
     private static final int LOADER_CATEGORY = 1;
-
+    private static Handler mHandler;
+    private static final int MSG_TOUCH_TIMEOUT = 1;
+    private static final long DELAY_TIME_RECEIVE = 60 * 1000L;//5 second countdown
     private File tempFile;
 
     public static ImgSelFragment instance() {
@@ -105,6 +109,16 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
         viewPager = view.findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(this);
+
+        mHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if (msg.what == MSG_TOUCH_TIMEOUT) {//touch timeout, executing setLocked
+                    viewPager.setLocked(true);
+                }
+                return false;
+            }
+        });
         return view;
     }
 
@@ -152,7 +166,11 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
                             TransitionManager.go(new Scene(viewPager), new Fade().setDuration(200));
                         }
                         viewPager.setAdapter((previewAdapter = new PreviewAdapter(getActivity(), imageList, config)));
-                        viewPager.setLocked(true);
+
+
+                        mHandler.removeMessages(MSG_TOUCH_TIMEOUT);
+                        mHandler.sendEmptyMessageDelayed(MSG_TOUCH_TIMEOUT, DELAY_TIME_RECEIVE);
+
                         previewAdapter.setListener(new OnItemClickListener() {
                             @Override
                             public int onCheckedClick(int position, Image image) {
