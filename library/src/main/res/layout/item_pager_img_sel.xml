@@ -11,4 +11,25 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_default_image" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true">
+
+    <EditText
+        android:id="@+id/EtInput"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:visibility="gone"
+        android:hint="输入密码" />
+
+    <Button
+        android:id="@+id/BtnEnter"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:visibility="gone"
+        android:text="提交" />
+    </LinearLayout>
 </RelativeLayout>

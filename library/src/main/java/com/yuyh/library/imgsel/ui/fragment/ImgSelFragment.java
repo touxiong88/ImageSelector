@@ -2,6 +2,7 @@ package com.yuyh.library.imgsel.ui.fragment;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,6 +40,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -67,6 +69,8 @@ import java.util.List;
 
 public class ImgSelFragment extends Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
+    private Button btnEnter;
+    private EditText passwdInput;
     private RecyclerView rvImageList;
     private Button btnAlbumSelected;
     private View rlBottom;
@@ -99,6 +103,7 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
         return fragment;
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_img_sel, container, false);
@@ -109,12 +114,31 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
         viewPager = view.findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(this);
+        passwdInput = view.findViewById(R.id.EtInputF);
+        btnEnter = view.findViewById(R.id.BtnEnterF);
 
+        btnEnter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 获取EditText中的文本
+                String text = passwdInput.getText().toString();
+                if (text.equals("456789")) {
+                    viewPager.setLocked(false);
+                    Log.d("456789", "获取的文本是: " + text);
+
+                } else {
+
+                    Log.d("456789", "获取的文本是: " + text);
+                }
+            }
+        });
         mHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what == MSG_TOUCH_TIMEOUT) {//touch timeout, executing setLocked
                     viewPager.setLocked(true);
+                    passwdInput.setVisibility(View.VISIBLE);
+                    btnEnter.setVisibility(View.VISIBLE);
                 }
                 return false;
             }

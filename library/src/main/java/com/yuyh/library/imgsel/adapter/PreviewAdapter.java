@@ -10,7 +10,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.yuyh.library.imgsel.ISNav;
 import com.yuyh.library.imgsel.config.ISListConfig;
@@ -32,6 +35,8 @@ public class PreviewAdapter extends PagerAdapter {
     private List<Image> images;
     private ISListConfig config;
     private OnItemClickListener listener;
+    private Button btnEnter;
+    private EditText passwdInput;
 
     public PreviewAdapter(Activity activity, List<Image> images, ISListConfig config) {
         this.activity = activity;
@@ -56,41 +61,35 @@ public class PreviewAdapter extends PagerAdapter {
         container.addView(root, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         final ImageView photoView = (ImageView) root.findViewById(R.id.ivImage);
-
+        passwdInput = root.findViewById(R.id.EtInput);
+        btnEnter = root.findViewById(R.id.BtnEnter);
         displayImage(photoView, images.get(position).path);
+        passwdInput.setVisibility(View.VISIBLE);
+        btnEnter.setVisibility(View.VISIBLE);
+
+        btnEnter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 获取EditText中的文本
+                String text = passwdInput.getText().toString();
+                if (text.equals("456789")) {
+                    Log.d("456789", "获取的文本是: " + text);
+                } else {
+
+                    Log.d("456789", "获取的文本是: " + text);
+                }
+            }
+        });
 
         return root;
     }
 
+
+
+
     @SuppressLint("ClickableViewAccessibility")
     private void displayImage(ImageView photoView, String path) {
         ISNav.getInstance().displayImage(activity, path, photoView, true);
-
-            // 设置 OnTouchListener
-            photoView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            // 手指按下
-                            Log.d("Touch", "ACTION_DOWN");
-                            // 处理你的逻辑
-                            break;
-                        case MotionEvent.ACTION_MOVE:
-                            // 手指移动
-                            Log.d("Touch", "ACTION_MOVE");
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            // 手指抬起
-                            Log.d("Touch", "ACTION_UP");
-                            break;
-                        case MotionEvent.ACTION_CANCEL:
-                            Log.d("Touch", "ACTION_CANCEL");
-                            break;
-                    }
-                    return true; // 拦截触摸事件
-                }
-            });
 
     }
 
