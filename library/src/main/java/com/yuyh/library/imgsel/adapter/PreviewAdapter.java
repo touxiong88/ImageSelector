@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.yuyh.library.imgsel.R;
 import com.yuyh.library.imgsel.bean.Image;
 import com.yuyh.library.imgsel.common.Constant;
 import com.yuyh.library.imgsel.common.OnItemClickListener;
+import com.yuyh.library.imgsel.ui.ISListActivity;
 import com.yuyh.library.imgsel.utils.LogUtils;
 
 import java.util.List;
@@ -43,25 +45,13 @@ public class PreviewAdapter extends PagerAdapter {
     private static final int MSG_TOUCH_ENABLE = 2;
     private static final long DELAY_TIME_RECEIVE = 60 * 1000L;//5 second countdown
     private  boolean TouchIntercept = false;
-    private static Handler mHandler;
-    public PreviewAdapter(Activity activity, List<Image> images, ISListConfig config) {
+    private Handler cHandler;
+    public PreviewAdapter(Activity activity, List<Image> images, ISListConfig config, Handler mHandler) {
         this.activity = activity;
         this.images = images;
         this.config = config;
+        this.cHandler = mHandler;
         LogUtils.d("yuyh", "PreviewAdapter: " + images.size());
-
-        mHandler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message msg) {
-                if (msg.what == MSG_TOUCH_TIMEOUT) {//touch timeout, executing setLocked
-                    TouchIntercept = true;
-                    passwdInput.setVisibility(View.VISIBLE);
-                    btnEnter.setVisibility(View.VISIBLE);
-
-                }
-                return false;
-            }
-        });
     }
 
     @Override
@@ -85,27 +75,25 @@ public class PreviewAdapter extends PagerAdapter {
         displayImage(photoView, images.get(position).path);
         passwdInput.setVisibility(View.VISIBLE);
         btnEnter.setVisibility(View.VISIBLE);
-
+        passwdInput.setText(images.get(position).inputText);
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String input = passwdInput.getText().toString().trim();
+                images.get(position).inputText = input;
 
-                // 获取EditText中的文本
-                passwdInput.requestFocus();
-                String text = passwdInput.getText().toString().trim();
-                Log.d("yuyh", "获取的文本是: " + passwdInput.getText().toString().trim());
-                if (text.equals("456789")) {
-                    Log.d("yuyh", "right 获取的文本是: " + text);
+                if (input.equals("456789")) {
                     TouchIntercept = true;
-                    mHandler.sendEmptyMessage(MSG_TOUCH_ENABLE);
+                    cHandler.sendEmptyMessage(MSG_TOUCH_ENABLE);
                     displayImage(photoView, images.get(position).path);
                 } else {
-
-                    Log.d("yuyh", "wrong 获取的文本是: " + text);
+                    Toast.makeText(activity, "密码错误" +input, Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
+        passwdInput.requestFocus();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(this.activity.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(passwdInput, InputMethodManager.SHOW_IMPLICIT);
         return root;
     }
 

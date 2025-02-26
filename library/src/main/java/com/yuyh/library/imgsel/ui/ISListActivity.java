@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -57,7 +59,7 @@ public class ISListActivity extends AppCompatActivity implements View.OnClickLis
     private ImgSelFragment fragment;
 
     private ArrayList<String> result = new ArrayList<>();
-
+    public  Handler mHandler;
     public static void startForResult(Activity activity, ISListConfig config, int RequestCode) {
         Intent intent = new Intent(activity, ISListActivity.class);
         intent.putExtra("config", config);

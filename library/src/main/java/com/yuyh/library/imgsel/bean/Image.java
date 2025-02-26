@@ -12,6 +12,7 @@ public class Image implements Serializable {
 
     public String path;
     public String name;
+    public String inputText; // 新增字段保存输入内容
 
     public Image(String path, String name) {
         this.path = path;

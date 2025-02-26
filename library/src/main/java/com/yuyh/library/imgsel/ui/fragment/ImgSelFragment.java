@@ -90,11 +90,19 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
 
     private static final int LOADER_ALL = 0;
     private static final int LOADER_CATEGORY = 1;
-    private static Handler mHandler;
+
     private static final int MSG_TOUCH_TIMEOUT = 1;
     private static final int MSG_TOUCH_ENABLE = 2;
     private static final long DELAY_TIME_RECEIVE = 60 * 1000L;//5 second countdown
-    private File tempFile;
+    private Handler fHandler;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof ISListActivity) {
+             fHandler = ((ISListActivity) activity).mHandler;
+        }
+    }
 
     public static ImgSelFragment instance() {
         ImgSelFragment fragment = new ImgSelFragment();
@@ -136,7 +144,7 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
                 }
             }
         });
-        mHandler = new Handler(new Handler.Callback() {
+        fHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what == MSG_TOUCH_TIMEOUT) {//touch timeout, executing setLocked
@@ -197,11 +205,11 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                             TransitionManager.go(new Scene(viewPager), new Fade().setDuration(200));
                         }
-                        viewPager.setAdapter((previewAdapter = new PreviewAdapter(getActivity(), imageList, config)));
+                        viewPager.setAdapter((previewAdapter = new PreviewAdapter(getActivity(), imageList, config, fHandler)));
 
 
-                        mHandler.removeMessages(MSG_TOUCH_TIMEOUT);
-                        mHandler.sendEmptyMessageDelayed(MSG_TOUCH_TIMEOUT, DELAY_TIME_RECEIVE);
+                        fHandler.removeMessages(MSG_TOUCH_TIMEOUT);
+                        fHandler.sendEmptyMessageDelayed(MSG_TOUCH_TIMEOUT, DELAY_TIME_RECEIVE);
 
                         previewAdapter.setListener(new OnItemClickListener() {
                             @Override
