@@ -69,8 +69,6 @@ import java.util.List;
 
 public class ImgSelFragment extends Fragment implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
-    private Button btnEnter;
-    private EditText passwdInput;
     private RecyclerView rvImageList;
     private Button btnAlbumSelected;
     private View rlBottom;
@@ -123,38 +121,17 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
         viewPager = view.findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(1);
         viewPager.addOnPageChangeListener(this);
-        passwdInput = view.findViewById(R.id.EtInputF);
-        btnEnter = view.findViewById(R.id.BtnEnterF);
 
-        passwdInput.setVisibility(View.VISIBLE);
-        btnEnter.setVisibility(View.VISIBLE);
 
-        btnEnter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 获取EditText中的文本
-                String text = passwdInput.getText().toString();
-                if (text.equals("456789")) {
-                    viewPager.setLocked(false);
-                    Log.d("456789", "获取的文本是: " + text);
-
-                } else {
-
-                    Log.d("456789", "获取的文本是: " + text);
-                }
-            }
-        });
         fHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 if (msg.what == MSG_TOUCH_TIMEOUT) {//touch timeout, executing setLocked
                     viewPager.setLocked(true);
-                    passwdInput.setVisibility(View.VISIBLE);
-                    btnEnter.setVisibility(View.VISIBLE);
-                } if (msg.what == MSG_TOUCH_ENABLE) {//touch timeout, executing setLocked
+                } if (msg.what == MSG_TOUCH_ENABLE) {
                     viewPager.setLocked(false);
-                    passwdInput.setVisibility(View.GONE);
-                    btnEnter.setVisibility(View.GONE);
+                    fHandler.removeMessages(MSG_TOUCH_TIMEOUT);
+                    fHandler.sendEmptyMessageDelayed(MSG_TOUCH_TIMEOUT, DELAY_TIME_RECEIVE);
                 }
                 return false;
             }

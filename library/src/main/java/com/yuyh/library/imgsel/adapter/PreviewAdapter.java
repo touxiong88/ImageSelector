@@ -86,34 +86,43 @@ public class PreviewAdapter extends PagerAdapter {
         passwdInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-// 文本变化前的处理
+            // 文本变化前的处理
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-// 文本变化时的处理
+            // 文本变化时的处理
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-// 文本变化后的处理
+            // 文本变化后的处理
                 inputText = s.toString();
-// 处理变化后的文本
+            // 处理变化后的文本
             }
         });
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 if (inputText.equals("456789")) {
+                    // 隐藏软键盘
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(passwdInput.getWindowToken(), 0);
+
+                    // 清除焦点和输入内容（可选）
+                    passwdInput.clearFocus();
+                    passwdInput.setText("");
+
                     TouchIntercept = true;
                     cHandler.sendEmptyMessage(MSG_TOUCH_ENABLE);
                     displayImage(photoView, images.get(position).path);
                     Toast.makeText(activity, "密码正确" +inputText, Toast.LENGTH_SHORT).show();
+                    passwdInput.setText("");
                 } else {
                     Toast.makeText(activity, "密码错误" +inputText, Toast.LENGTH_SHORT).show();
+                    passwdInput.setText("");
                 }
+
             }
         });
 
