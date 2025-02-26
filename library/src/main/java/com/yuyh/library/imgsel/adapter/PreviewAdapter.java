@@ -79,8 +79,8 @@ public class PreviewAdapter extends PagerAdapter {
         passwdInput = root.findViewById(R.id.EtInput);
         btnEnter = root.findViewById(R.id.BtnEnter);
         displayImage(photoView, images.get(position).path);
-        passwdInput.setVisibility(View.VISIBLE);
-        btnEnter.setVisibility(View.VISIBLE);
+//        passwdInput.setVisibility(View.VISIBLE);
+//        btnEnter.setVisibility(View.VISIBLE);
         passwdInput.requestFocus();
 
         passwdInput.addTextChangedListener(new TextWatcher() {
@@ -104,7 +104,7 @@ public class PreviewAdapter extends PagerAdapter {
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (inputText.equals("456789")) {
+                if (inputText.equals("20250226")) {
                     // 隐藏软键盘
                     InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(passwdInput.getWindowToken(), 0);
@@ -120,6 +120,8 @@ public class PreviewAdapter extends PagerAdapter {
                     passwdInput.setText("");
                 } else {
                     Toast.makeText(activity, "密码错误" +inputText, Toast.LENGTH_SHORT).show();
+                    // 清除焦点和输入内容（可选）
+                    passwdInput.clearFocus();
                     passwdInput.setText("");
                 }
 
