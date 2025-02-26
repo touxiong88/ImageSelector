@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void displayImage(Context context, String path, ImageView imageView, boolean TouchIntercept) {
                 Glide.with(context).load(path).into(imageView);
-                LogUtils.d("yuyh", "displayImage: " + TouchIntercept);
+                Log.d("yuyh", "Mainactivity displayImage: " + TouchIntercept);
                 if(TouchIntercept) {
                     // 设置 OnTouchListener
                     imageView.setOnTouchListener(new View.OnTouchListener() {
