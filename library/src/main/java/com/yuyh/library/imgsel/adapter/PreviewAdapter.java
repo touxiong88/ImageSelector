@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -37,12 +39,29 @@ public class PreviewAdapter extends PagerAdapter {
     private OnItemClickListener listener;
     private Button btnEnter;
     private EditText passwdInput;
-
+    private static final int MSG_TOUCH_TIMEOUT = 1;
+    private static final int MSG_TOUCH_ENABLE = 2;
+    private static final long DELAY_TIME_RECEIVE = 60 * 1000L;//5 second countdown
+    private  boolean TouchIntercept = false;
+    private static Handler mHandler;
     public PreviewAdapter(Activity activity, List<Image> images, ISListConfig config) {
         this.activity = activity;
         this.images = images;
         this.config = config;
         LogUtils.d("yuyh", "PreviewAdapter: " + images.size());
+
+        mHandler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if (msg.what == MSG_TOUCH_TIMEOUT) {//touch timeout, executing setLocked
+                    TouchIntercept = true;
+                    passwdInput.setVisibility(View.VISIBLE);
+                    btnEnter.setVisibility(View.VISIBLE);
+
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -70,13 +89,19 @@ public class PreviewAdapter extends PagerAdapter {
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 // 获取EditText中的文本
-                String text = passwdInput.getText().toString();
+                passwdInput.requestFocus();
+                String text = passwdInput.getText().toString().trim();
+                Log.d("yuyh", "获取的文本是: " + passwdInput.getText().toString().trim());
                 if (text.equals("456789")) {
-                    Log.d("456789", "获取的文本是: " + text);
+                    Log.d("yuyh", "right 获取的文本是: " + text);
+                    TouchIntercept = true;
+                    mHandler.sendEmptyMessage(MSG_TOUCH_ENABLE);
+                    displayImage(photoView, images.get(position).path);
                 } else {
 
-                    Log.d("456789", "获取的文本是: " + text);
+                    Log.d("yuyh", "wrong 获取的文本是: " + text);
                 }
             }
         });
@@ -89,7 +114,7 @@ public class PreviewAdapter extends PagerAdapter {
 
     @SuppressLint("ClickableViewAccessibility")
     private void displayImage(ImageView photoView, String path) {
-        ISNav.getInstance().displayImage(activity, path, photoView, true);
+        ISNav.getInstance().displayImage(activity, path, photoView, TouchIntercept);
 
     }
 

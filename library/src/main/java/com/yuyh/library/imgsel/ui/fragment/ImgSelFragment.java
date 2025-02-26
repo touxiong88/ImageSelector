@@ -92,6 +92,7 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
     private static final int LOADER_CATEGORY = 1;
     private static Handler mHandler;
     private static final int MSG_TOUCH_TIMEOUT = 1;
+    private static final int MSG_TOUCH_ENABLE = 2;
     private static final long DELAY_TIME_RECEIVE = 60 * 1000L;//5 second countdown
     private File tempFile;
 
@@ -117,6 +118,9 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
         passwdInput = view.findViewById(R.id.EtInputF);
         btnEnter = view.findViewById(R.id.BtnEnterF);
 
+        passwdInput.setVisibility(View.VISIBLE);
+        btnEnter.setVisibility(View.VISIBLE);
+
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,6 +143,10 @@ public class ImgSelFragment extends Fragment implements View.OnClickListener, Vi
                     viewPager.setLocked(true);
                     passwdInput.setVisibility(View.VISIBLE);
                     btnEnter.setVisibility(View.VISIBLE);
+                } if (msg.what == MSG_TOUCH_ENABLE) {//touch timeout, executing setLocked
+                    viewPager.setLocked(false);
+                    passwdInput.setVisibility(View.GONE);
+                    btnEnter.setVisibility(View.GONE);
                 }
                 return false;
             }
