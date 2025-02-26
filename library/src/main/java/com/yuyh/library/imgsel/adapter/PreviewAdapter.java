@@ -79,10 +79,8 @@ public class PreviewAdapter extends PagerAdapter {
         passwdInput = root.findViewById(R.id.EtInput);
         btnEnter = root.findViewById(R.id.BtnEnter);
         displayImage(photoView, images.get(position).path);
-//        passwdInput.setVisibility(View.VISIBLE);
-//        btnEnter.setVisibility(View.VISIBLE);
-        passwdInput.requestFocus();
-
+        passwdInput.setVisibility(View.VISIBLE);
+        btnEnter.setVisibility(View.VISIBLE);
         passwdInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -137,7 +135,6 @@ public class PreviewAdapter extends PagerAdapter {
     @SuppressLint("ClickableViewAccessibility")
     private void displayImage(ImageView photoView, String path) {
         ISNav.getInstance().displayImage(activity, path, photoView, TouchIntercept);
-
     }
 
     @Override
