@@ -26,7 +26,6 @@
         android:layout_height="64dp"
         android:background="@android:color/transparent"/>
 
-
     <Button
         android:id="@+id/BtnEnter"
         android:layout_width="wrap_content"

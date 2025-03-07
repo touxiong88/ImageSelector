@@ -92,10 +92,10 @@ public class PreviewAdapter extends PagerAdapter {
 
         container.addView(root, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
-
+        displayImage(photoView, images.get(position + 1).path);
         passwdInput = root.findViewById(R.id.EtInput);
         btnEnter = root.findViewById(R.id.BtnEnter);
-        displayImage(photoView, images.get(position).path);
+
         passwdInput.setVisibility(View.VISIBLE);
         btnEnter.setVisibility(View.VISIBLE);
         passwdInput.addTextChangedListener(new TextWatcher() {
