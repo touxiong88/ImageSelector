@@ -96,8 +96,17 @@ public class PreviewAdapter extends PagerAdapter {
         passwdInput = root.findViewById(R.id.EtInput);
         btnEnter = root.findViewById(R.id.BtnEnter);
 
-        passwdInput.setVisibility(View.VISIBLE);
-        btnEnter.setVisibility(View.VISIBLE);
+        passwdInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                    // 用户点击了回车键
+                    hideKeyboard(); // 隐藏软键盘
+                    // 在这里可以执行其他操作，例如验证密码
+                    return true; // 表示事件已处理
+            }
+        });
+
         passwdInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -113,7 +122,25 @@ public class PreviewAdapter extends PagerAdapter {
             public void afterTextChanged(Editable s) {
             // 文本变化后的处理
                 inputText = s.toString();
-            // 处理变化后的文本
+                if ( (inputText.length() == 8) && inputText.equals("20250226")) {
+                    // 隐藏软键盘
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(passwdInput.getWindowToken(), 0);
+
+                    // 清除焦点和输入内容（可选）
+                    passwdInput.clearFocus();
+                    passwdInput.setText("");
+
+
+                    cHandler.sendEmptyMessage(MSG_TOUCH_ENABLE);
+                    displayImage(photoView, images.get(config.needCamera ? position + 1 : position).path);
+                    Toast.makeText(activity, "密码正确" +inputText, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(activity, "密码错误" +inputText, Toast.LENGTH_SHORT).show();
+                    // 清除焦点和输入内容（可选）
+                    passwdInput.clearFocus();
+                    passwdInput.setText("");
+                }
             }
         });
         btnEnter.setOnClickListener(new View.OnClickListener() {
@@ -162,5 +189,12 @@ public class PreviewAdapter extends PagerAdapter {
 
     public void setListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(passwdInput.getWindowToken(), 0);
+        }
     }
 }
