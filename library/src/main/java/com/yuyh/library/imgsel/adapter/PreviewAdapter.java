@@ -68,17 +68,13 @@ public class PreviewAdapter extends PagerAdapter {
     @Override
     public View instantiateItem(ViewGroup container, final int position) {
 
-        this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        // 设置全屏沉浸式模式
-        hideSystemUI();
         View root = View.inflate(activity, R.layout.item_pager_img_sel, null);
         container.addView(root, ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         final ImageView photoView = (ImageView) root.findViewById(R.id.ivImage);
         passwdInput = root.findViewById(R.id.EtInput);
         btnEnter = root.findViewById(R.id.BtnEnter);
-        displayImage(photoView, images.get(position).path);
+        displayImage(photoView, images.get(position + 1).path);
         passwdInput.setVisibility(View.VISIBLE);
         btnEnter.setVisibility(View.VISIBLE);
         passwdInput.addTextChangedListener(new TextWatcher() {
@@ -96,7 +92,25 @@ public class PreviewAdapter extends PagerAdapter {
             public void afterTextChanged(Editable s) {
             // 文本变化后的处理
                 inputText = s.toString();
-            // 处理变化后的文本
+                if ( (inputText.length() == 8) && inputText.equals("20250226")) {
+                    // 隐藏软键盘
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(passwdInput.getWindowToken(), 0);
+
+                    // 清除焦点和输入内容（可选）
+                    passwdInput.clearFocus();
+                    passwdInput.setText("");
+
+
+                    cHandler.sendEmptyMessage(MSG_TOUCH_ENABLE);
+                    //displayImage(photoView, images.get(position + 1).path);
+                    Toast.makeText(activity, "密码正确" +inputText, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(activity, "密码错误" +inputText, Toast.LENGTH_SHORT).show();
+                    // 清除焦点和输入内容（可选）
+                    passwdInput.clearFocus();
+                    passwdInput.setText("");
+                }
             }
         });
         btnEnter.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +127,7 @@ public class PreviewAdapter extends PagerAdapter {
 
                     TouchIntercept = true;
                     cHandler.sendEmptyMessage(MSG_TOUCH_ENABLE);
-                    displayImage(photoView, images.get(position).path);
+        			//displayImage(photoView, images.get(position + 1).path);
                     Toast.makeText(activity, "密码正确" +inputText, Toast.LENGTH_SHORT).show();
                     passwdInput.setText("");
                 } else {
@@ -151,28 +165,10 @@ public class PreviewAdapter extends PagerAdapter {
         this.listener = listener;
     }
 
-    private void hideSystemUI() {
-        // Hide status bar and navigation bar
-        this.activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        View decorView = this.activity.getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY; // 使用 IMMERSIVE_STICKY
-        decorView.setSystemUiVisibility(uiOptions);
-        this.activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(passwdInput.getWindowToken(), 0);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            this.activity.getWindow().setNavigationBarColor(Color.TRANSPARENT);
-        }
-    }
-
-    private void showSystemUI() {
-        this.activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        View decorView = this.activity.getWindow().getDecorView();
-        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
     }
 }
