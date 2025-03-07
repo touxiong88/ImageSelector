@@ -7,9 +7,10 @@ import android.support.v4.app.Fragment;
 import android.widget.ImageView;
 
 import com.yuyh.library.imgsel.common.ImageLoader;
+import com.yuyh.library.imgsel.config.ISCameraConfig;
 import com.yuyh.library.imgsel.config.ISListConfig;
+import com.yuyh.library.imgsel.ui.ISCameraActivity;
 import com.yuyh.library.imgsel.ui.ISListActivity;
-import com.yuyh.library.imgsel.utils.LogUtils;
 
 /**
  * 总线
@@ -30,7 +31,6 @@ public class ISNav {
                 }
             }
         }
-        LogUtils.d("yuyh", "ISNav: ");
         return instance;
     }
 
@@ -43,9 +43,9 @@ public class ISNav {
         this.loader = loader;
     }
 
-    public void displayImage(Context context, String path, ImageView imageView, boolean TouchIntercept) {
+    public void displayImage(Context context, String path, ImageView imageView) {
         if (loader != null) {
-            loader.displayImage(context, path, imageView, TouchIntercept);
+            loader.displayImage(context, path, imageView);
         }
     }
 
@@ -56,6 +56,16 @@ public class ISNav {
             ISListActivity.startForResult((Fragment) source, config, reqCode);
         } else if (source instanceof android.app.Fragment) {
             ISListActivity.startForResult((android.app.Fragment) source, config, reqCode);
+        }
+    }
+
+    public void toCameraActivity(Object source, ISCameraConfig config, int reqCode) {
+        if (source instanceof Activity) {
+            ISCameraActivity.startForResult((Activity) source, config, reqCode);
+        } else if (source instanceof Fragment) {
+            ISCameraActivity.startForResult((Fragment) source, config, reqCode);
+        } else if (source instanceof android.app.Fragment) {
+            ISCameraActivity.startForResult((android.app.Fragment) source, config, reqCode);
         }
     }
 

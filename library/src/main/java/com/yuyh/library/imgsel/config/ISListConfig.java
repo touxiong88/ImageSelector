@@ -34,6 +34,11 @@ public class ISListConfig implements Serializable {
      */
     public int maxNum = 9;
 
+    /**
+     * 第一个item是否显示相机
+     */
+    public boolean needCamera;
+
     public int statusBarColor = -1;
 
     /**
@@ -93,6 +98,7 @@ public class ISListConfig implements Serializable {
         this.multiSelect = builder.multiSelect;
         this.rememberSelected = builder.rememberSelected;
         this.maxNum = builder.maxNum;
+        this.needCamera = builder.needCamera;
         this.statusBarColor = builder.statusBarColor;
         this.isDark = builder.isDark;
         this.backResId = builder.backResId;
@@ -116,6 +122,7 @@ public class ISListConfig implements Serializable {
         private boolean multiSelect = true;
         private boolean rememberSelected = true;
         private int maxNum = 9;
+        private boolean needCamera = true;
         public int statusBarColor = -1;
         private boolean isDark = true;
         private int backResId = -1;
@@ -170,6 +177,11 @@ public class ISListConfig implements Serializable {
 
         public Builder maxNum(int maxNum) {
             this.maxNum = maxNum;
+            return this;
+        }
+
+        public Builder needCamera(boolean needCamera) {
+            this.needCamera = needCamera;
             return this;
         }
 

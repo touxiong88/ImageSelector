@@ -7,6 +7,9 @@
             android:name=".ui.ISListActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+	<activity
+            android:name=".ui.ISCameraActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data
             android:name="APP_ID"
