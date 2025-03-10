@@ -54,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    public void Exit(View view) {
+        finish();
+    }
     public void Multiselect(View view) {
         tvResult.setText("");
         ISListConfig config = new ISListConfig.Builder()
